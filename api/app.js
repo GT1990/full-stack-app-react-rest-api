@@ -8,6 +8,9 @@ const { sequelize } = require("./models");
 const usersRoutes = require("./routes/users-routes");
 const coursesRoutes = require("./routes/courses-routes");
 
+// cors
+const cors = require("cors");
+
 // variable to enable global error logging
 const enableGlobalErrorLogging =
   process.env.ENABLE_GLOBAL_ERROR_LOGGING === "true";
@@ -20,6 +23,14 @@ app.use(express.json());
 
 // setup morgan which gives us http request logging
 app.use(morgan("dev"));
+
+// allow cross-origin resource sharing
+app.use(
+  cors({
+    origin: "*", // allows all origins
+    methods: "GET,PUT,POST,DELETE", // methods allowed
+  })
+);
 
 // setup a friendly greeting for the root route
 app.get("/", (req, res) => {
