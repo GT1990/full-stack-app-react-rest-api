@@ -16,9 +16,9 @@ const CreateCourse = () => {
 
   return (
     <main>
-      <div class="wrap">
+      <div className="wrap">
         <h2>Create Course</h2>
-        <div class="validation--errors">
+        <div className="validation--errors">
           <h3>Validation Errors</h3>
           <ul>
             <li>Please provide a value for "Title"</li>
@@ -26,21 +26,21 @@ const CreateCourse = () => {
           </ul>
         </div>
         <form>
-          <div class="main--flex">
+          <div className="main--flex">
             <div>
-              <label for="courseTitle">Course Title</label>
+              <label htmlFor="courseTitle">Course Title</label>
               <input id="courseTitle" name="courseTitle" type="text" value="" />
 
               <p>By {user.name}</p>
 
-              <label for="courseDescription">Course Description</label>
+              <label htmlFor="courseDescription">Course Description</label>
               <textarea
                 id="courseDescription"
                 name="courseDescription"
               ></textarea>
             </div>
             <div>
-              <label for="estimatedTime">Estimated Time</label>
+              <label htmlFor="estimatedTime">Estimated Time</label>
               <input
                 id="estimatedTime"
                 name="estimatedTime"
@@ -48,14 +48,14 @@ const CreateCourse = () => {
                 value=""
               />
 
-              <label for="materialsNeeded">Materials Needed</label>
+              <label htmlFor="materialsNeeded">Materials Needed</label>
               <textarea id="materialsNeeded" name="materialsNeeded"></textarea>
             </div>
           </div>
-          <button class="button" type="submit">
+          <button className="button" type="submit">
             Create Course
           </button>
-          <button class="button button-secondary" onClick={cancelHandler}>
+          <button className="button button-secondary" onClick={cancelHandler}>
             Cancel
           </button>
         </form>

@@ -7,27 +7,27 @@ const CourseDetail = () => {
   const { id } = useParams();
   return (
     <main>
-      <div class="actions--bar">
-        <div class="wrap">
-          <Link class="button" to={`/courses/${id}/update`}>
+      <div className="actions--bar">
+        <div className="wrap">
+          <Link className="button" to={`/courses/${id}/update`}>
             Update Course
           </Link>
-          <Link class="button" to={`/courses/${id}/delete`}>
+          <Link className="button" to={`/courses/${id}/delete`}>
             Delete Course
           </Link>
-          <Link class="button button-secondary" to="/">
+          <Link className="button button-secondary" to="/">
             Return to List
           </Link>
         </div>
       </div>
 
-      <div class="wrap">
+      <div className="wrap">
         <h2>Course Detail</h2>
         <form>
-          <div class="main--flex">
+          <div className="main--flex">
             <div>
-              <h3 class="course--detail--title">Course</h3>
-              <h4 class="course--name">Build a Basic Bookcase</h4>
+              <h3 className="course--detail--title">Course</h3>
+              <h4 className="course--name">Build a Basic Bookcase</h4>
               <p>By Joe Smith</p>
 
               <p>
@@ -80,11 +80,11 @@ const CourseDetail = () => {
               </p>
             </div>
             <div>
-              <h3 class="course--detail--title">Estimated Time</h3>
+              <h3 className="course--detail--title">Estimated Time</h3>
               <p>14 hours</p>
 
-              <h3 class="course--detail--title">Materials Needed</h3>
-              <ul class="course--detail--list">
+              <h3 className="course--detail--title">Materials Needed</h3>
+              <ul className="course--detail--list">
                 <li>1/2 x 3/4 inch parting strip</li>
                 <li>1 x 2 common pine</li>
                 <li>1 x 4 common pine</li>
