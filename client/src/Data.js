@@ -31,9 +31,7 @@ export default class Data {
     }
     console.log(options);
     return axios({
-      method: "GET",
-      url: "http://bit.ly/2mTM3nY",
-      responseType: "stream",
+      ...options,
     }).then((response) => {
       return response;
     });
