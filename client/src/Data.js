@@ -31,23 +31,34 @@ export default class Data {
     }
     console.log(options);
     return axios({
-      method: "get",
+      method: "GET",
       url: "http://bit.ly/2mTM3nY",
       responseType: "stream",
     }).then((response) => {
-      return response.data;
+      return response;
     });
   }
 
   async getUser(username, password) {
-    const response = await this.api("/users", "get", null, true, {
+    const response = await this.api("/users", "GET", null, true, {
       username,
       password,
     });
     if (response.status === 200) {
-      return response;
+      return response.data;
     } else if (response.status === 401) {
       return null;
+    } else {
+      throw new Error();
+    }
+  }
+
+  async createUser(user) {
+    const response = await this.api("/users", "POST", user);
+    if (response.status === 201) {
+      return [];
+    } else if (response.status === 400) {
+      return response.json().then((data) => data.errors);
     } else {
       throw new Error();
     }
