@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import Cookies from "js-cookie";
-
 import Data from "./Data";
 
 const Context = React.createContext();
 
-export default class Provider extends Component {
+export class Provider extends Component {
   state = {
     authenticatedUser: null,
   };
@@ -18,6 +17,7 @@ export default class Provider extends Component {
   }
 
   render() {
+    alert("Context");
     const { authenticatedUser } = this.state;
     const value = {
       data: this.data,
@@ -28,9 +28,7 @@ export default class Provider extends Component {
       },
     };
     return (
-      <Context.Provider value={value}>
-        {...this.props.children}
-      </Context.Provider>
+      <Context.Provider value={value}>{this.props.children}</Context.Provider>
     );
   }
 
@@ -57,11 +55,11 @@ export const Consumer = Context.Consumer;
  * @returns {function} - Higher-order component
  */
 export default function withContext(Component) {
-  return function ContextComponent(props){
-    <Context.Consumer>
-      {context => {
-        <Component {...props} context={context} />
-      }}
-    </Context.Consumer>
-  }
+  return function ContextComponent(props) {
+    return (
+      <Context.Consumer>
+        {(context) => <Component {...props} context={context} />}
+      </Context.Consumer>
+    );
+  };
 }
