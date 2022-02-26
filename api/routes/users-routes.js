@@ -28,6 +28,7 @@ router.post(
   asyncHandler(async (req, res) => {
     let user;
     try {
+      console.log("REQ BODY: ", req.body);
       user = await User.create(req.body); // creates new user and saves to database
       res.location("/").status(201).end(); // 201 Created
     } catch (error) {

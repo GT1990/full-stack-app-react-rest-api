@@ -58,8 +58,10 @@ module.exports = (sequelize) => {
           if (val.length >= 8 && val.length <= 20) {
             const hashedPassword = bcrypt.hashSync(val, 10);
             this.setDataValue("password", hashedPassword);
+          } else if (val === null || val === "") {
+            this.setDataValue("password", null);
           } else {
-            throw new Error("Password must be between 8 and 20 characters");
+            this.setDataValue("password", val);
           }
         },
         validate: {
@@ -68,6 +70,10 @@ module.exports = (sequelize) => {
           },
           notEmpty: {
             msg: "A password is required",
+          },
+          len: {
+            args: [8, 60], // val set to 60 because after password is hashed it becomes longer
+            msg: "Password must be between 8 and 20 characters long",
           },
         },
       },
