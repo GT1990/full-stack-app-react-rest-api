@@ -13,6 +13,9 @@ export default class Data {
     let options = {
       method,
       url: config.apiBaseURL + path,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
     };
     if (body) {
       options.data = body;
@@ -29,16 +32,21 @@ export default class Data {
         );
       }
     }
-    console.log(options);
     return axios({
       ...options,
-    }).then((response) => {
-      return response;
-    });
+    })
+      .then((response) => {
+        console.log("THEN: ", response);
+        return response;
+      })
+      .catch(({ response }) => {
+        console.log("CATCH: ", response);
+        return response;
+      });
   }
 
   async getUser(username, password) {
-    const response = await this.api("/users", "GET", null, true, {
+    const response = await this.api("GET", "/users", null, true, {
       username,
       password,
     });
@@ -52,11 +60,12 @@ export default class Data {
   }
 
   async createUser(user) {
-    const response = await this.api("/users", "POST", user);
+    const response = await this.api("POST", "/users", user);
     if (response.status === 201) {
       return [];
     } else if (response.status === 400) {
-      return response.json().then((data) => data.errors);
+      console.log("response 400: ", response.data.errors);
+      return response.data.errors;
     } else {
       throw new Error();
     }
