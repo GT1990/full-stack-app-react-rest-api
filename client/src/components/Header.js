@@ -3,30 +3,40 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Header = (props) => {
+  const { context } = props;
+  console.log("AUTH: ", context.authenticatedUser);
+  let header;
+  if (context.authenticatedUser.user) {
+    const { firstName, lastName } = context.authenticatedUser.user;
+    header = (
+      <ul className="header--signedin">
+        <li>
+          Welcome, {firstName} {lastName}!
+        </li>
+        <li>
+          <Link to="signout">Sign Out</Link>
+        </li>
+      </ul>
+    );
+  } else {
+    header = (
+      <ul className="header--signedout">
+        <li>
+          <Link to="/signup">Sign Up</Link>
+        </li>
+        <li>
+          <Link to="signin">Sign In</Link>
+        </li>
+      </ul>
+    );
+  }
   return (
     <header>
       <div className="wrap header--flex">
         <h1 className="header--logo">
           <a href="index.html">Courses</a>
         </h1>
-        <nav>
-          {/* signed in */}
-          {/* <ul className="header--signedin">
-        <li>Welcome, Joe Smith!</li>
-        <li>
-          <a href="sign-out.html">Sign Out</a>
-        </li>
-      </ul> */}
-          {/* signed out */}
-          <ul className="header--signedout">
-            <li>
-              <Link to="/signup">Sign Up</Link>
-            </li>
-            <li>
-              <Link to="signin">Sign In</Link>
-            </li>
-          </ul>
-        </nav>
+        <nav>{header}</nav>
       </div>
     </header>
   );
