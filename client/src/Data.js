@@ -36,11 +36,9 @@ export default class Data {
       ...options,
     })
       .then((response) => {
-        console.log("THEN: ", response);
         return response;
       })
       .catch(({ response }) => {
-        console.log("CATCH: ", response);
         return response;
       });
   }
@@ -64,7 +62,6 @@ export default class Data {
     if (response.status === 201) {
       return [];
     } else if (response.status === 400) {
-      console.log("response 400: ", response.data.errors);
       return response.data.errors;
     } else {
       throw new Error();
