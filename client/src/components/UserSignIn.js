@@ -1,26 +1,97 @@
 // UserSignIn - This component provides the "Sign In" screen by rendering a form that allows a user to sign in using their existing account information. The component also renders a "Sign In" button that when clicked signs in the user and a "Cancel" button that returns the user to the default route (i.e. the list of courses).
 
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const UserSignIn = () => {
-  const navigate = useNavigate();
+/**
+ * UserSignIn renders a sign in form that allows user to sign in using an existing account.
+ * Sign in button requests user info from the REST API /users route
+ * using the GET method to authenticate user before signing in.
+ * A cancel button takes you back to the default route.
+ * @param {object} props - destructuring context from props
+ * @returns {JSX} html for sign in form
+ */
+const UserSignIn = ({ context }) => {
+  const [error, setError] = useState(null); // state to store sign in error
+  const navigate = useNavigate(); // for redirects
+  // refs
+  const emailAddressRef = useRef();
+  const passwordRef = useRef();
 
+  /**
+   * Handles cancel button clicks,
+   * preventing default behavior and redirecting to default route.
+   * @param {event} e - input event
+   */
   const cancelHandler = (e) => {
     e.preventDefault();
     navigate("/");
+  };
+
+  /**
+   * Handles form submit, preventing default behavior, signin in user using the context functions passed in as props.
+   * @param {event} e - form event
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const username = emailAddressRef.current.value;
+    const password = passwordRef.current.value;
+    context.actions
+      .signIn(username, password)
+      .then((user) => {
+        if (user === null) {
+          // error signing in
+          emailAddressRef.current.value = "";
+          passwordRef.current.value = "";
+          setError("Sorry there was error signing in. Please try again!");
+        } else {
+          // successful sign in redirects to default route
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        navigate("/error");
+      });
+  };
+
+  /**
+   * displayErrors() takes error state and returns jsx to display sign in error
+   * @returns {JSX} html to display sign in error message
+   */
+  const displayErrors = () => {
+    if (error) {
+      return (
+        <div className="validation--errors">
+          <h3>Sign In Error</h3>
+          <ul>
+            <li>{error}</li>
+          </ul>
+        </div>
+      );
+    }
   };
 
   return (
     <main>
       <div className="form--centered">
         <h2>Sign In</h2>
-
-        <form>
+        {displayErrors()}
+        <form onSubmit={handleSubmit}>
           <label htmlFor="emailAddress">Email Address</label>
-          <input id="emailAddress" name="emailAddress" type="email" value="" />
+          <input
+            ref={emailAddressRef}
+            id="emailAddress"
+            name="emailAddress"
+            type="email"
+          />
           <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" value="" />
+          <input
+            ref={passwordRef}
+            id="password"
+            name="password"
+            type="password"
+          />
           <button className="button" type="submit">
             Sign In
           </button>
