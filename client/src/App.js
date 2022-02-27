@@ -14,21 +14,24 @@ import NotFound from "./components/NotFound";
 
 import withContext from "./Context";
 
+const HeaderWithContext = withContext(Header);
 const UserSignUpWithContext = withContext(UserSignUp);
+const UserSignInWithContext = withContext(UserSignIn);
+const UserSignOutWithContext = withContext(UserSignOut);
 
 function App() {
   return (
     <BrowserRouter>
-      <Header />
+      <HeaderWithContext />
       <Routes>
         <Route path="/" element={<Courses />} />
         <Route path="/courses/create" element={<CreateCourse />} />
         <Route path="/courses/:id/update" element={<UpdateCourse />} />
         <Route path="/courses/:id/delete" element={<DeleteCourse />} />
         <Route path="/courses/:id" element={<CourseDetail />} />
-        <Route path="/signin" element={<UserSignIn />} />
+        <Route path="/signin" element={<UserSignInWithContext />} />
         <Route path="/signup" element={<UserSignUpWithContext />} />
-        <Route path="/signout" element={<UserSignOut />} />
+        <Route path="/signout" element={<UserSignOutWithContext />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
