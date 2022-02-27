@@ -3,23 +3,39 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+/**
+ * UserSignUp component renders a sign up form allowing users to create a new account.
+ * On submit a POST request is send to the REST API's /api/users route creating a new user,
+ * then signing in the user. Lastly a cancel button is rendered returning to the default route.
+ * @param {object} props - with context
+ * @returns {JSX} sign up html form
+ */
 const UserSignUp = (props) => {
-  // state
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([]); // state storing errors
 
-  // refs
+  // input refs
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const emailAddressRef = useRef();
   const passwordRef = useRef();
 
+  // for redirects
   const navigate = useNavigate();
 
+  /**
+   * Handles cancel button clicks,
+   * preventing default behavior and redirecting to default route.
+   * @param {event} e - input event
+   */
   const cancelHandler = (e) => {
     e.preventDefault();
     navigate("/");
   };
 
+  /**
+   * Handles form submit, preventing default behavior, creating and signin in user using the context functions passed in as props.
+   * @param {event} e - form event
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     const { context } = props;
@@ -33,25 +49,43 @@ const UserSignUp = (props) => {
       .createUser(user)
       .then((errors) => {
         if (errors.length) {
-          console.log("ERRORS THEN: ", errors);
+          // errors found
           setErrors(errors);
         } else {
+          // user created no errors, next sign in
           setErrors([]);
           firstNameRef.current.value = "";
           lastNameRef.current.value = "";
           emailAddressRef.current.value = "";
           passwordRef.current.value = "";
           console.log(`${user.emailAddress} has successfully signed up!`);
-          context.actions.signIn(user.emailAddress, user.password);
+          context.actions
+            .signIn(user.emailAddress, user.password)
+            .then((user) => {
+              if (user === null) {
+                setErrors([
+                  "Sorry there was error signing in. Please try again!",
+                ]);
+              } else {
+                console.log(`${user.emailAddress} has successfully signed in!`);
+                navigate("/");
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+              navigate("/error");
+            });
         }
       })
       .catch((err) => {
-        console.error("USERSIGNUP.js: ", err);
         this.props.history.push("/error");
       });
   };
 
-  // display any form validation errors
+  /**
+   * displayErrors() takes errors state and returns jsx to display errors
+   * @returns {JSX} html to display validation erros
+   */
   const displayErrors = () => {
     if (errors.length) {
       const errorsList = errors.map((error) => <li>{error}</li>);
@@ -63,7 +97,7 @@ const UserSignUp = (props) => {
         </div>
       );
     }
-    return null;
+    return null; // no errors
   };
 
   return (
