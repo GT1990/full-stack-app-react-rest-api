@@ -19,8 +19,7 @@ const UserSignUp = (props) => {
   const emailAddressRef = useRef();
   const passwordRef = useRef();
 
-  // for redirects
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // for redirects
 
   /**
    * Handles cancel button clicks,
@@ -84,7 +83,7 @@ const UserSignUp = (props) => {
 
   /**
    * displayErrors() takes errors state and returns jsx to display errors
-   * @returns {JSX} html to display validation erros
+   * @returns {JSX} html to display validation errors
    */
   const displayErrors = () => {
     if (errors.length) {
