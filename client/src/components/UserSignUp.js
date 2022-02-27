@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
  * @param {object} props - with context
  * @returns {JSX} sign up html form
  */
-const UserSignUp = (props) => {
+const UserSignUp = ({ context }) => {
   const [errors, setErrors] = useState([]); // state storing errors
 
   // input refs
@@ -37,7 +37,6 @@ const UserSignUp = (props) => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { context } = props;
     const user = {
       firstName: firstNameRef.current.value,
       lastName: lastNameRef.current.value,
