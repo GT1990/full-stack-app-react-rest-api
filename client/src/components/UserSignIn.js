@@ -1,7 +1,7 @@
 // UserSignIn - This component provides the "Sign In" screen by rendering a form that allows a user to sign in using their existing account information. The component also renders a "Sign In" button that when clicked signs in the user and a "Cancel" button that returns the user to the default route (i.e. the list of courses).
 
 import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 /**
  * UserSignIn renders a sign in form that allows user to sign in using an existing account.
@@ -12,6 +12,15 @@ import { Link, useNavigate } from "react-router-dom";
  * @returns {JSX} html for sign in form
  */
 const UserSignIn = ({ context }) => {
+  let redirectTo = "/"; // set redirect to home root by default
+
+  // checks if user was redirected to signin page from another page, inorder to be redirected to that same page once signed in
+  const location = useLocation();
+  if (location.state) {
+    const from = location.state.from.location.pathname;
+    redirectTo = from; // sets redirect to page user came from
+  }
+
   const [error, setError] = useState(null); // state to store sign in error
   const navigate = useNavigate(); // for redirects
   // refs
@@ -46,7 +55,7 @@ const UserSignIn = ({ context }) => {
           setError("Sorry there was error signing in. Please try again!");
         } else {
           // successful sign in redirects to default route
-          navigate("/");
+          navigate(redirectTo);
         }
       })
       .catch((err) => {
