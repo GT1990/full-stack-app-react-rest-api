@@ -1,12 +1,17 @@
-// Header- Displays the top menu bar for the application and includes buttons for signing in and signing up (if there's not an authenticated user) or the user's name and a button for signing out (if there's an authenticated user).
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Header = (props) => {
-  const { context } = props;
-  console.log("AUTH: ", context.authenticatedUser);
-  let header;
-  if (context.authenticatedUser.user) {
+/**
+ * Header renders the page menu bar including signing up, signing in or
+ * (if signed in with authenticated user) displays user's name and a sign out button.
+ * User info is passed in through context by props.
+ * @param {object} props - destructures context from props
+ * @returns {JSX} renders the html for the page header
+ */
+const Header = ({ context }) => {
+  let header; // stores nav portion of header dependent on signed in or out
+  if (context.authenticatedUser) {
+    // if user is signed in display user's name and sign out button
     const { firstName, lastName } = context.authenticatedUser.user;
     header = (
       <ul className="header--signedin">
@@ -19,6 +24,7 @@ const Header = (props) => {
       </ul>
     );
   } else {
+    // else if signed out display signup and signin buttons
     header = (
       <ul className="header--signedout">
         <li>
@@ -30,6 +36,7 @@ const Header = (props) => {
       </ul>
     );
   }
+
   return (
     <header>
       <div className="wrap header--flex">
