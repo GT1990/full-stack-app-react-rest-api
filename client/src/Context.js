@@ -26,6 +26,9 @@ export class Provider extends Component {
       actions: {
         signIn: this.signIn,
         signOut: this.signOut,
+        getCourses: this.getCourses,
+        getCourse: this.getCourse,
+        createCourse: this.createCourse,
       },
     };
     return (
@@ -36,16 +39,31 @@ export class Provider extends Component {
   signIn = async (username, password) => {
     const user = await this.data.getUser(username, password);
     if (user) {
+      user.user.password = password;
       this.setState({ authenticatedUser: user });
       Cookies.set("authenticatedUser", JSON.stringify(user), { expires: 1 });
     }
-    console.log("USER: ", user);
     return user;
   };
 
   signOut = () => {
     this.setState({ authenticatedUser: null });
     Cookies.remove("authenticatedUser");
+  };
+
+  getCourses = async () => {
+    const courses = await this.data.getCourses();
+    return courses;
+  };
+
+  getCourse = async (id) => {
+    const course = await this.data.getCourse(id);
+    return course;
+  };
+
+  createCourse = async (body, credentials) => {
+    const course = await this.data.createCourse(body, credentials);
+    return course;
   };
 }
 

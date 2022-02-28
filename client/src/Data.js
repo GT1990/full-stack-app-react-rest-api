@@ -43,6 +43,7 @@ export default class Data {
       });
   }
 
+  // functions for /api/users routes
   async getUser(username, password) {
     const response = await this.api("GET", "/users", null, true, {
       username,
@@ -59,6 +60,46 @@ export default class Data {
 
   async createUser(user) {
     const response = await this.api("POST", "/users", user);
+    if (response.status === 201) {
+      return [];
+    } else if (response.status === 400) {
+      return response.data.errors;
+    } else {
+      throw new Error();
+    }
+  }
+
+  // functions for /api/courses
+  async getCourses() {
+    const response = await this.api("GET", "/courses");
+    if (response.status === 200) {
+      return response.data.courses;
+    } else if (response.status === 404) {
+      return response.data.errors;
+    } else {
+      throw new Error();
+    }
+  }
+
+  async getCourse(id) {
+    const response = await this.api("GET", `/courses/${id}`);
+    if (response.status === 200) {
+      return response.data.course;
+    } else if (response.status === 404) {
+      return response.data.errors;
+    } else {
+      throw new Error();
+    }
+  }
+
+  async createCourse(body, credentials) {
+    const response = await this.api(
+      "POST",
+      "/courses",
+      body,
+      true,
+      credentials
+    );
     if (response.status === 201) {
       return [];
     } else if (response.status === 400) {
