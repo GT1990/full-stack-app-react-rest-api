@@ -1,7 +1,7 @@
 // UserSignUp - This component provides the "Sign Up" screen by rendering a form that allows a user to sign up by creating a new account. The component also renders a "Sign Up" button that when clicked sends a POST request to the REST API's /api/users route and signs in the user. This component also renders a "Cancel" button that returns the user to the default route (i.e. the list of courses).
 
-import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 /**
  * UserSignUp component renders a sign up form allowing users to create a new account.
@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
  */
 const UserSignUp = ({ context }) => {
   const [errors, setErrors] = useState([]); // state storing errors
-
+  const [redirectTo, setredirectTo] = useState("/");
   // input refs
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -20,7 +20,13 @@ const UserSignUp = ({ context }) => {
   const passwordRef = useRef();
 
   const navigate = useNavigate(); // for redirects
-
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state) {
+      const from = location.state.from.location.pathname;
+      setredirectTo(from); // sets redirect to page user came from
+    }
+  }, []);
   /**
    * Handles cancel button clicks,
    * preventing default behavior and redirecting to default route.
@@ -59,14 +65,14 @@ const UserSignUp = ({ context }) => {
           console.log(`${user.emailAddress} has successfully signed up!`);
           context.actions
             .signIn(user.emailAddress, user.password)
-            .then((user) => {
-              if (user === null) {
+            .then((response) => {
+              if (response === null) {
                 setErrors([
                   "Sorry there was error signing in. Please try again!",
                 ]);
               } else {
                 console.log(`${user.emailAddress} has successfully signed in!`);
-                navigate("/");
+                navigate(redirectTo);
               }
             })
             .catch((err) => {
