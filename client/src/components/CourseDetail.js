@@ -1,19 +1,79 @@
 // CourseDetail - This component provides the "Course Detail" screen by retrieving the detail for a course from the REST API's /api/courses/:id route and rendering the course. The component also renders a "Delete Course" button that when clicked should send a DELETE request to the REST API's /api/courses/:id route in order to delete a course. This component also renders an "Update Course" button for navigating to the "Update Course" screen.
-
+// TODO: comments
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "./Loading";
+
+/**
+ *
+ * @param {*} param0
+ * @returns
+ */
 const CourseDetail = ({ context }) => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState();
+  const [error, setError] = useState(null);
+  const [ownsCourse, setownsCourse] = useState(false);
+  const navigate = useNavigate();
 
+  /**
+   *
+   */
   useEffect(() => {
     context.actions.getCourse(id).then((course) => {
-      setCourse(course);
-      setLoading(false);
+      if (course) {
+        setCourse(course);
+        const courseUser = course.user.emailAddress;
+        const authenticatedUser = context.authenticatedUser.user.emailAddress;
+        if (courseUser === authenticatedUser) {
+          setownsCourse(true);
+        }
+
+        setLoading(false);
+      } else {
+        navigate("/course-not-found");
+      }
     });
   }, []);
+
+  /**
+   *
+   */
+  const handleDelete = () => {
+    if (window.confirm(`Are you sure you want to DELETE: ${course.title}?`)) {
+      const credentials = {
+        username: context.authenticatedUser.user.emailAddress,
+        password: context.authenticatedUser.user.password,
+      };
+      context.actions.deleteCourse(id, credentials).then((error) => {
+        if (error) {
+          setError(error);
+        } else {
+          navigate("/");
+        }
+      });
+    }
+  };
+
+  /**
+   * displayErrors() takes errors state and returns jsx to display errors
+   * @returns {JSX} html to display validation errors
+   */
+  const displayErrors = () => {
+    if (error) {
+      return (
+        <div className="validation--errors">
+          <h3>Deletion Error</h3>
+          <ul>
+            <li>{error}</li>
+          </ul>
+        </div>
+      );
+    }
+
+    return null; // no errors
+  };
 
   const displayMaterialsNeeded = () => {
     if (course.materialsNeeded) {
@@ -34,12 +94,16 @@ const CourseDetail = ({ context }) => {
         <main>
           <div className="actions--bar">
             <div className="wrap">
-              <Link className="button" to={`/courses/${id}/update`}>
-                Update Course
-              </Link>
-              <Link className="button" to={`/courses/${id}/delete`}>
-                Delete Course
-              </Link>
+              {ownsCourse ? (
+                <>
+                  <Link className="button" to={`/courses/${id}/update`}>
+                    Update Course
+                  </Link>
+                  <button className="button" onClick={handleDelete}>
+                    Delete Course
+                  </button>
+                </>
+              ) : null}
               <Link className="button button-secondary" to="/">
                 Return to List
               </Link>
@@ -48,6 +112,7 @@ const CourseDetail = ({ context }) => {
 
           <div className="wrap">
             <h2>Course Detail</h2>
+            {displayErrors()}
             <form>
               <div className="main--flex">
                 <div>
