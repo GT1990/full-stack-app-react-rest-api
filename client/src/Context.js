@@ -29,6 +29,7 @@ export class Provider extends Component {
         getCourses: this.getCourses,
         getCourse: this.getCourse,
         createCourse: this.createCourse,
+        updateCourse: this.updateCourse,
       },
     };
     return (
@@ -62,8 +63,13 @@ export class Provider extends Component {
   };
 
   createCourse = async (body, credentials) => {
-    const course = await this.data.createCourse(body, credentials);
-    return course;
+    const response = await this.data.createCourse(body, credentials);
+    return response;
+  };
+
+  updateCourse = async (id, body, credentials) => {
+    const response = await this.data.updateCourse(id, body, credentials);
+    return response;
   };
 }
 
