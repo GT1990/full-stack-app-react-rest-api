@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 /**
  * Header renders the page menu bar including signing up, signing in or
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
  * @returns {JSX} renders the html for the page header
  */
 const Header = ({ context }) => {
+  const location = useLocation();
   let header; // stores nav portion of header dependent on signed in or out
   if (context.authenticatedUser) {
     // if user is signed in display user's name and sign out button
@@ -28,10 +29,14 @@ const Header = ({ context }) => {
     header = (
       <ul className="header--signedout">
         <li>
-          <Link to="/signup">Sign Up</Link>
+          <Link to="/signup" state={{ from: { location } }}>
+            Sign Up
+          </Link>
         </li>
         <li>
-          <Link to="signin">Sign In</Link>
+          <Link to="signin" state={{ from: { location } }}>
+            Sign In
+          </Link>
         </li>
       </ul>
     );
