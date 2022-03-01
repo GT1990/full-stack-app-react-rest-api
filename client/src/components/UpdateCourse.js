@@ -1,16 +1,22 @@
-// UpdateCourse - This component provides the "Update Course" screen by rendering a form that allows a user to update one of their existing courses. The component also renders an "Update Course" button that when clicked sends a PUT request to the REST API's /api/courses/:id route. This component also renders a "Cancel" button that returns the user to the "Course Detail" screen.
-
 import React, { useRef, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loading from "./Loading";
+
+/**
+ * UpdateCourse renders a form that allows a user to update one of thier existing courses.
+ * The "Update Course" button sends a PUT request to the REST API's /api/courses/:id route.
+ * The "Cancel" button, and a successful update returns the user to the Course Detail's page
+ * @param {object} props - context destructured from props
+ * @returns {JSX} rendering update course form
+ */
 const UpdateCourse = ({ context }) => {
   // url query
   const { id } = useParams();
   const navigate = useNavigate();
   // state
   const [loading, setLoading] = useState(true);
-  const [errors, setErrors] = useState([]);
-  // ref
+  const [errors, setErrors] = useState([]); // stores errors returned from REST API
+  // ref - input form refs
   const titleRef = useRef();
   const descriptionRef = useRef();
   const estimatedTimeRef = useRef();
@@ -18,14 +24,20 @@ const UpdateCourse = ({ context }) => {
 
   /**
    * Handles cancel button clicks,
-   * preventing default behavior and redirecting to default route.
+   * preventing default behavior and redirecting to course detail page.
    * @param {event} e - input event
    */
   const cancelHandler = (e) => {
     e.preventDefault();
-    navigate("/");
+    navigate(`/courses/${id}`);
   };
 
+  /**
+   * useEffect runs only once when component mounts.
+   * Calls getCourse function, passed down through context prop, with the id from the url param.
+   * If a course is retrieved the form bellow is initialized with the courses details.
+   * Else if a course is not found user is redirected to /courses-not-found route.
+   */
   useEffect(() => {
     context.actions.getCourse(id).then((course) => {
       if (course) {
@@ -40,6 +52,11 @@ const UpdateCourse = ({ context }) => {
     });
   }, []);
 
+  /**
+   * handleSubmit is called when form is submitted.
+   * The functions creates the body, and credentials needed to call the updateCourse function.
+   * @param {event} e - event object
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     const body = {
