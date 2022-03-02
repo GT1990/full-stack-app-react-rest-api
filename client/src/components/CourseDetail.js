@@ -37,9 +37,12 @@ const CourseDetail = ({ context }) => {
         if (course) {
           setCourse(course);
           const courseUser = course.user.emailAddress;
-          const authenticatedUser = context.authenticatedUser.user.emailAddress;
-          if (courseUser === authenticatedUser) {
-            setownsCourse(true);
+          if (context.authenticatedUser) {
+            const authenticatedUser =
+              context.authenticatedUser.user.emailAddress;
+            if (courseUser === authenticatedUser) {
+              setownsCourse(true);
+            }
           }
           setLoading(false);
         } else {
