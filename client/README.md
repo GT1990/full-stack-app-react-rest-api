@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# full-stack-app-react-rest-api
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+    A full stack application using react and rest api.
 
-## Available Scripts
+## Usage
 
-In the project directory, you can run:
+1. Requires REST API for data. See /api readme file.
+2. Install dependencies by running `npm install`
+3. Run app by typing `npm start`
+   - Runs the app in the development mode.\
+   - Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### `npm start`
+## Example
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## config.js
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    Contains REST API base url.
 
-### `npm test`
+## index.js
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    Wraps the App component with the Context Provider.
+    Links CSS files to app.
 
-### `npm run build`
+## App.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    Contains all routes of the app rendering the corresponding components.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Data.js
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    Contains all functions that make calls to REST API using axios.
 
-### `npm run eject`
+## Context.js
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    Contains global context, providing global state and all functions to sign up,in,out and the calls to GET,POST,PUT,DELETE courses and users using the Data.js functions.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Components
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Header.js
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    Header for all pages with sign up,in,out links.
 
-## Learn More
+### Loading.js
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    Loading spinning animation used while waiting for data to load.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### UserSignUp.js
 
-### Code Splitting
+    Sign up creates a new user then signs in the user
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### UserSignIn.js
 
-### Analyzing the Bundle Size
+    Checks the user credentials vs the user stored in the REST API database, and signs in user if credentials match. Storing user in global state and cookie data.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### UserSignOut
 
-### Making a Progressive Web App
+    Signs out a user by deleting user from global state and removing cookie data.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Courses.js
 
-### Advanced Configuration
+    Gets all courses from REST API and displays a list of all courses and a button to create a new course.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### CourseDetail.js
 
-### Deployment
+    Lists the details of the course selected and provides links to delete and update course if the signed in user matches the course's user.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### CreateCourse.js
 
-### `npm run build` fails to minify
+    Private route (only accessed if user is signed in). Displays a form that creates a new course.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### UpdateCourse.js
+
+    Private route (only accessed if user that is signed in matches the course's user). Allows course's user to update course details.
+
+### PrivateRoute.js
+
+    Checks if user is signed in before allowing access to nested routes.
+
+### Forbidden.js
+
+    If access is denied user is redirected to /forbidden
+
+### NotFound.js
+
+    If course is not found user is redirected to /notfound
+
+### UnhandledError.js
+
+    All other errors are redirected to /error

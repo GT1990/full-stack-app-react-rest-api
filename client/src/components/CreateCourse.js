@@ -65,13 +65,19 @@ const CreateCourse = ({ context }) => {
       username: user.emailAddress,
       password: user.password,
     };
-    context.actions.createCourse(body, credentials).then((errors) => {
-      if (errors.length) {
-        setErrors(errors);
-      } else {
-        navigate("/");
-      }
-    });
+    context.actions
+      .createCourse(body, credentials)
+      .then((errors) => {
+        if (errors.length) {
+          setErrors(errors);
+        } else {
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        navigate("/error");
+      });
   };
 
   /**

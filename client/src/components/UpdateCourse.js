@@ -39,17 +39,29 @@ const UpdateCourse = ({ context }) => {
    * Else if a course is not found user is redirected to /courses-not-found route.
    */
   useEffect(() => {
-    context.actions.getCourse(id).then((course) => {
-      if (course) {
-        setLoading(false);
-        titleRef.current.value = course.title;
-        descriptionRef.current.value = course.description;
-        estimatedTimeRef.current.value = course.estimatedTime;
-        materialsNeededRef.current.value = course.materialsNeeded;
-      } else {
-        navigate("/course-not-found");
-      }
-    });
+    context.actions
+      .getCourse(id)
+      .then((course) => {
+        if (course) {
+          const authenticatedUser = context.authenticatedUser.user.emailAddress;
+          const courseUser = course.user.emailAddress;
+          if (authenticatedUser === courseUser) {
+            setLoading(false);
+            titleRef.current.value = course.title;
+            descriptionRef.current.value = course.description;
+            estimatedTimeRef.current.value = course.estimatedTime;
+            materialsNeededRef.current.value = course.materialsNeeded;
+          } else {
+            navigate("/forbidden");
+          }
+        } else {
+          navigate("/notfound");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        navigate("/error");
+      });
   }, []);
 
   /**
@@ -70,13 +82,19 @@ const UpdateCourse = ({ context }) => {
       password: context.authenticatedUser.user.password,
     };
 
-    context.actions.updateCourse(id, body, credentials).then((errors) => {
-      if (errors.length) {
-        setErrors(errors);
-      } else {
-        navigate(`/courses/${id}`);
-      }
-    });
+    context.actions
+      .updateCourse(id, body, credentials)
+      .then((errors) => {
+        if (errors.length) {
+          setErrors(errors);
+        } else {
+          navigate(`/courses/${id}`);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        navigate("/error");
+      });
   };
 
   /**
@@ -88,7 +106,6 @@ const UpdateCourse = ({ context }) => {
       const errorsList = errors.map((error, index) => (
         <li key={index}>{error}</li>
       ));
-
       return (
         <div className="validation--errors">
           <h3>Validation Errors</h3>

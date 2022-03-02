@@ -1,4 +1,9 @@
 import "../css/loading.css";
+
+/**
+ * Loading animation
+ * @returns {JSX} rendering loading animation
+ */
 const Loading = () => {
   return (
     <div className="loadingWrapper">

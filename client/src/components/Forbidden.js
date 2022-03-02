@@ -1,6 +1,17 @@
 import React from "react";
 
+/**
+ * Access denied redirects here
+ * @returns Forbidden page
+ */
 const Forbidden = () => {
-  return <h1>FORBIDDEN</h1>;
+  return (
+    <main>
+      <div className="wrap">
+        <h2>Forbidden</h2>
+        <p>Oh oh! You can't access this page.</p>
+      </div>
+    </main>
+  );
 };
 export default Forbidden;

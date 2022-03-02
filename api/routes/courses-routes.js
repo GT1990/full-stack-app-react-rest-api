@@ -154,7 +154,12 @@ router.delete(
         res.status(204).end(); // 204 No Content
       } else {
         // user not matched access denied
-        res.status(403).json({ message: "Access denied" }); // 403 Forbidden
+        res
+          .status(403)
+          .json({
+            message:
+              "Access denied: only the user that created this course can delete it.",
+          }); // 403 Forbidden
       }
     } else {
       // no course found matching id

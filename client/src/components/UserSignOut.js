@@ -13,7 +13,7 @@ const SignOut = ({ context }) => {
   useEffect(() => {
     context.actions.signOut();
     navigate("/");
-  });
+  }, []);
 
   return null;
 };

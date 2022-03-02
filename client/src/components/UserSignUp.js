@@ -82,7 +82,8 @@ const UserSignUp = ({ context }) => {
         }
       })
       .catch((err) => {
-        this.props.history.push("/error");
+        console.error(err);
+        navigate("/error");
       });
   };
 

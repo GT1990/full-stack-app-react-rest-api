@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 /**
@@ -10,37 +10,43 @@ import { Link, useLocation } from "react-router-dom";
  */
 const Header = ({ context }) => {
   const location = useLocation();
-  let header; // stores nav portion of header dependent on signed in or out
-  if (context.authenticatedUser) {
-    // if user is signed in display user's name and sign out button
-    const { firstName, lastName } = context.authenticatedUser.user;
-    header = (
-      <ul className="header--signedin">
-        <li>
-          Welcome, {firstName} {lastName}!
-        </li>
-        <li>
-          <Link to="signout">Sign Out</Link>
-        </li>
-      </ul>
-    );
-  } else {
-    // else if signed out display signup and signin buttons
-    header = (
-      <ul className="header--signedout">
-        <li>
-          <Link to="/signup" state={{ from: { location } }}>
-            Sign Up
-          </Link>
-        </li>
-        <li>
-          <Link to="signin" state={{ from: { location } }}>
-            Sign In
-          </Link>
-        </li>
-      </ul>
-    );
-  }
+  // state
+  const [loading, setLoading] = useState(true);
+  const [header, setHeader] = useState(); // stores nav portion of header dependent on signed in or out
+  useEffect(() => {
+    if (context.authenticatedUser) {
+      // if user is signed in display user's name and sign out button
+      const { firstName, lastName } = context.authenticatedUser.user;
+      setHeader(
+        <ul className="header--signedin">
+          <li>
+            Welcome, {firstName} {lastName}!
+          </li>
+          <li>
+            <Link to="signout">Sign Out</Link>
+          </li>
+        </ul>
+      );
+      setLoading(false);
+    } else {
+      // else if signed out display signup and signin buttons
+      setHeader(
+        <ul className="header--signedout">
+          <li>
+            <Link to="/signup" state={{ from: { location } }}>
+              Sign Up
+            </Link>
+          </li>
+          <li>
+            <Link to="signin" state={{ from: { location } }}>
+              Sign In
+            </Link>
+          </li>
+        </ul>
+      );
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <header>
@@ -48,7 +54,7 @@ const Header = ({ context }) => {
         <h1 className="header--logo">
           <Link to="/">Courses</Link>
         </h1>
-        <nav>{header}</nav>
+        {loading ? null : <nav>{header}</nav>}
       </div>
     </header>
   );

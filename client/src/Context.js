@@ -4,6 +4,9 @@ import Data from "./Data";
 
 const Context = React.createContext();
 
+/**
+ * Provider
+ */
 export class Provider extends Component {
   state = {
     authenticatedUser: null,
@@ -30,6 +33,7 @@ export class Provider extends Component {
         getCourse: this.getCourse,
         createCourse: this.createCourse,
         updateCourse: this.updateCourse,
+        deleteCourse: this.deleteCourse,
       },
     };
     return (
@@ -37,6 +41,13 @@ export class Provider extends Component {
     );
   }
 
+  /**
+   * signIn function calls getUser and sees if username and password match the REST API
+   * If user is found it is stored in global state and passed down by context props
+   * @param {string} username
+   * @param {string} password
+   * @returns {object} user or null
+   */
   signIn = async (username, password) => {
     const user = await this.data.getUser(username, password);
     if (user) {
@@ -47,28 +58,66 @@ export class Provider extends Component {
     return user;
   };
 
+  /**
+   * signOut function sets authenicatedUser to null in global state
+   * and deletes authenticatedUser cookie
+   */
   signOut = () => {
     this.setState({ authenticatedUser: null });
     Cookies.remove("authenticatedUser");
   };
 
+  /**
+   * getCourses function retrieves all courses from REST API and returns those courses
+   * @returns {object} courses object
+   */
   getCourses = async () => {
     const courses = await this.data.getCourses();
     return courses;
   };
 
+  /**
+   * getCourse functin gets a course from REST API by id passed to it
+   * @param {number} id - course id
+   * @returns {object} course
+   */
   getCourse = async (id) => {
     const course = await this.data.getCourse(id);
     return course;
   };
 
+  /**
+   * createCourse function creates a course by passing in body and credentials
+   * @param {object} body - course form input details
+   * @param {object} credentials - username and password of user
+   * @returns {object} returns validation errors or null
+   */
   createCourse = async (body, credentials) => {
     const response = await this.data.createCourse(body, credentials);
     return response;
   };
 
+  /**
+   * updateCourse function takes a course id, course body details, and user credentials
+   * to update course information
+   * @param {number} id - course id
+   * @param {object} body - course form input details
+   * @param {object} credentials - username and password of user
+   * @returns {object} returns validation errors or null
+   */
   updateCourse = async (id, body, credentials) => {
     const response = await this.data.updateCourse(id, body, credentials);
+    return response;
+  };
+
+  /**
+   * deleteCourse takes a id and credentials and if user matches course is deleted
+   * @param {number} id - course id
+   * @param {object} credentials - username and password
+   * @returns {object} error messages or null
+   */
+  deleteCourse = async (id, credentials) => {
+    const response = await this.data.deleteCourse(id, credentials);
     return response;
   };
 }
