@@ -10,6 +10,7 @@ const Context = React.createContext();
 export class Provider extends Component {
   state = {
     authenticatedUser: null,
+    locationHistory: null,
   };
 
   constructor() {
@@ -18,15 +19,18 @@ export class Provider extends Component {
     this.cookie = Cookies.get("authenticatedUser");
     this.state = {
       authenticatedUser: this.cookie ? JSON.parse(this.cookie) : null,
+      locationHistory: null,
     };
   }
 
   render() {
-    const { authenticatedUser } = this.state;
+    const { authenticatedUser, locationHistory } = this.state;
     const value = {
       data: this.data,
       authenticatedUser,
+      locationHistory,
       actions: {
+        setLocationHistory: this.setLocationHistory,
         signIn: this.signIn,
         signOut: this.signOut,
         getCourses: this.getCourses,
@@ -42,6 +46,19 @@ export class Provider extends Component {
   }
 
   /**
+   * Takes a route and sets it to global state
+   * @param {string} location
+   */
+  setLocationHistory = (location) => {
+    this.setState((prevState) => {
+      return {
+        authenticatedUser: prevState.authenticatedUser,
+        locationHistory: location,
+      };
+    });
+  };
+
+  /**
    * signIn function calls getUser and sees if username and password match the REST API
    * If user is found it is stored in global state and passed down by context props
    * @param {string} username
@@ -52,7 +69,12 @@ export class Provider extends Component {
     const user = await this.data.getUser(username, password);
     if (user) {
       user.user.password = password;
-      this.setState({ authenticatedUser: user });
+      this.setState((prevState) => {
+        return {
+          locationHistory: prevState.locationHistory,
+          authenticatedUser: user,
+        };
+      });
       Cookies.set("authenticatedUser", JSON.stringify(user), { expires: 1 });
     }
     return user;
@@ -63,7 +85,12 @@ export class Provider extends Component {
    * and deletes authenticatedUser cookie
    */
   signOut = () => {
-    this.setState({ authenticatedUser: null });
+    this.setState((prevState) => {
+      return {
+        locationHistory: prevState.locationHistory,
+        authenticatedUser: null,
+      };
+    });
     Cookies.remove("authenticatedUser");
   };
 

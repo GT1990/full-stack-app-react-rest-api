@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 /**
@@ -10,14 +10,21 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
  * @returns {JSX} html for sign in form
  */
 const UserSignIn = ({ context }) => {
-  let redirectTo = "/"; // set redirect to home root by default
+  const [redirectTo, setRedirectTo] = useState("/"); // set redirect to home root by default
 
   // checks if user was redirected to signin page from another page, inorder to be redirected to that same page once signed in
   const location = useLocation();
-  if (location.state) {
-    const from = location.state.from.location.pathname;
-    redirectTo = from; // sets redirect to page user came from
-  }
+  useEffect(() => {
+    if (location.state) {
+      const from = location.state.from.location.pathname;
+      if (from === "/forbidden") {
+        setRedirectTo(context.locationHistory);
+        context.actions.setLocationHistory(null);
+      } else {
+        setRedirectTo(from); // sets redirect to page user came from
+      }
+    }
+  }, []);
 
   const [error, setError] = useState(null); // state to store sign in error
   const navigate = useNavigate(); // for redirects

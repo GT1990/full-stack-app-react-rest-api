@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 /**
  * If the user is authenticated child component is rendered.
@@ -9,11 +9,12 @@ import { Outlet, useNavigate } from "react-router-dom";
  */
 const PrivateRoute = ({ context }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const authenticated = context.authenticatedUser;
     if (!authenticated) {
-      navigate("/forbidden");
+      navigate("/forbidden", { state: { from: { location } } });
     } else {
       setLoading(false);
     }

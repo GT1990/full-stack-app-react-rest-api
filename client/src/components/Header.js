@@ -46,7 +46,7 @@ const Header = ({ context }) => {
       );
       setLoading(false);
     }
-  }, [context.authenticatedUser]);
+  }, [context.authenticatedUser, location]);
 
   return (
     <header>

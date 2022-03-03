@@ -1,10 +1,19 @@
-import React from "react";
-
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 /**
  * Access denied redirects here
  * @returns Forbidden page
  */
-const Forbidden = () => {
+const Forbidden = ({ context }) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state) {
+      const from = location.state.from.location.pathname;
+      context.actions.setLocationHistory(from);
+    }
+  }, []);
+
   return (
     <main>
       <div className="wrap">

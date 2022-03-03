@@ -31,6 +31,7 @@ const CoursesWithContext = withContext(Courses);
 const CourseDetailWithContext = withContext(CourseDetail);
 const CreateCourseWithContext = withContext(CreateCourse);
 const UpdateCourseWithContext = withContext(UpdateCourse);
+const ForbiddenWithContext = withContext(Forbidden);
 
 /**
  * App Routes
@@ -61,7 +62,7 @@ function App() {
         <Route path="/signout" element={<UserSignOutWithContext />} />
         {/* error routes */}
         <Route path="/error" element={<UnhandledError />} />
-        <Route path="/forbidden" element={<Forbidden />} />
+        <Route path="/forbidden" element={<ForbiddenWithContext />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
