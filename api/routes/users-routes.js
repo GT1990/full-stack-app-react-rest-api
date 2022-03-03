@@ -41,7 +41,7 @@ router.post(
         res.status(400).json({ errors }); // 400 Bad Request
       } else {
         // pass error to global error handler
-        throw error;
+        next(error);
       }
     }
   })

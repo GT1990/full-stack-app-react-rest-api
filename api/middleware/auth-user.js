@@ -63,7 +63,6 @@ exports.authenticateUser = async (req, res, next) => {
   }
   if (errorMessage) {
     // error found deny access
-    console.warn(errorMessage);
     res.status(401).json({ message: "Access Denied" });
   } else {
     next(); // authentication succeeded call next()

@@ -13,7 +13,7 @@ const cors = require("cors");
 
 // variable to enable global error logging
 const enableGlobalErrorLogging =
-  process.env.ENABLE_GLOBAL_ERROR_LOGGING === "true";
+  process.env.ENABLE_GLOBAL_ERROR_LOGGING === "false";
 
 // create the Express app
 const app = express();
