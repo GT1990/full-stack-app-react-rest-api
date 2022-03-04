@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 /**
@@ -13,7 +13,7 @@ const SignOut = ({ context }) => {
   useEffect(() => {
     context.actions.signOut();
     navigate("/");
-  }, []);
+  }, [context.actions, navigate]);
 
   return null;
 };
