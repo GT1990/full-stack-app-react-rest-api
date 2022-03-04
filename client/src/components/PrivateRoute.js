@@ -14,11 +14,11 @@ const PrivateRoute = ({ context }) => {
   useEffect(() => {
     const authenticated = context.authenticatedUser;
     if (!authenticated) {
-      navigate("/forbidden", { state: { from: { location } } });
+      navigate("/signin", { state: { from: { location } } });
     } else {
       setLoading(false);
     }
-  }, []);
+  }, [context.authenticatedUser, location, navigate]);
   return <>{loading ? null : <Outlet />}</>;
 };
 
