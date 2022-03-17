@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/full-stack-app-react-rest-api/static/css/main.58694130.css",
-    "main.js": "/full-stack-app-react-rest-api/static/js/main.7c9d8133.js",
+    "main.js": "/full-stack-app-react-rest-api/static/js/main.145a5221.js",
     "index.html": "/full-stack-app-react-rest-api/index.html",
     "main.58694130.css.map": "/full-stack-app-react-rest-api/static/css/main.58694130.css.map",
-    "main.7c9d8133.js.map": "/full-stack-app-react-rest-api/static/js/main.7c9d8133.js.map"
+    "main.145a5221.js.map": "/full-stack-app-react-rest-api/static/js/main.145a5221.js.map"
   },
   "entrypoints": [
     "static/css/main.58694130.css",
-    "static/js/main.7c9d8133.js"
+    "static/js/main.145a5221.js"
   ]
 }
