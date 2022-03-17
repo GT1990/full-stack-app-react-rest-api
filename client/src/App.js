@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // component imports
 import Header from "./components/Header";
@@ -38,16 +38,14 @@ const ForbiddenWithContext = withContext(Forbidden);
  * @returns {routes}
  */
 function App() {
-  useEffect(() => {
-    console.log("PATH: ", window.location.pathname);
-    if (window.location.pathname == "/full-stack-app-react-rest-api") {
-      window.location.replace("/");
-    }
-  }, []);
   return (
     <BrowserRouter>
       <HeaderWithContext />
       <Routes>
+        <Route
+          path="/full-stack-app-react-rest-api"
+          element={<Navigate to="/" />}
+        />
         {/* default route */}
         <Route path="/" element={<CoursesWithContext />} />
         {/* courses routes */}
