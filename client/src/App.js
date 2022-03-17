@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // component imports
 import Header from "./components/Header";
@@ -42,6 +42,7 @@ function App() {
     <BrowserRouter>
       <HeaderWithContext />
       <Routes>
+      <Route path="/full-stack-app-react-rest-api" element={<Navigate replace to="/" />}
         {/* default route */}
         <Route path="/" element={<CoursesWithContext />} />
         {/* courses routes */}
