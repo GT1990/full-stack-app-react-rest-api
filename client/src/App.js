@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 // component imports
@@ -41,14 +41,14 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     console.log("PATH: ", window.location.pathname);
-    if(window.location.pathname == '/full-stack-app-react-rest-api'){
-      
+    if (window.location.pathname == "/full-stack-app-react-rest-api") {
       navigate("/");
     }
-  },[]);
+  }, []);
   return (
     <BrowserRouter>
       <HeaderWithContext />
+      <Routes>
         {/* default route */}
         <Route path="/" element={<CoursesWithContext />} />
         {/* courses routes */}
