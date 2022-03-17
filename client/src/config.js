@@ -1,6 +1,6 @@
 // REST API base url
 const config = {
-  apiBaseURL: "http://localhost:5000/api",
+  apiBaseURL: "https://my-react-rest-api.herokuapp.com/api",
 };
 
 export default config;
