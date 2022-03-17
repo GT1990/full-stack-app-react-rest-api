@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // component imports
 import Header from "./components/Header";
@@ -38,11 +38,10 @@ const ForbiddenWithContext = withContext(Forbidden);
  * @returns {routes}
  */
 function App() {
-  const navigate = useNavigate();
   useEffect(() => {
     console.log("PATH: ", window.location.pathname);
     if (window.location.pathname == "/full-stack-app-react-rest-api") {
-      navigate("/");
+      window.location.replace("/");
     }
   }, []);
   return (
