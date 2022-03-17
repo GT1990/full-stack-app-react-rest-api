@@ -42,7 +42,10 @@ function App() {
     <BrowserRouter>
       <HeaderWithContext />
       <Routes>
-      <Route path="/full-stack-app-react-rest-api" element={<Navigate replace to="/" />}
+        <Route
+          path="/full-stack-app-react-rest-api"
+          element={<Navigate replace to="/" />}
+        />
         {/* default route */}
         <Route path="/" element={<CoursesWithContext />} />
         {/* courses routes */}
