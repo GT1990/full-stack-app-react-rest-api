@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 // component imports
 import Header from "./components/Header";
@@ -39,13 +39,9 @@ const ForbiddenWithContext = withContext(Forbidden);
  */
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <HeaderWithContext />
       <Routes>
-        <Route
-          path="/full-stack-app-react-rest-api"
-          element={<Navigate to="/" />}
-        />
         {/* default route */}
         <Route path="/" element={<CoursesWithContext />} />
         {/* courses routes */}
@@ -69,7 +65,7 @@ function App() {
         <Route path="/forbidden" element={<ForbiddenWithContext />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
